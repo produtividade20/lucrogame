@@ -1,0 +1,14 @@
+{
+  "name": "funil-gamificado-investimentos",
+  "version": "1.0.0",
+  "description": "Funil de vendas gamificado para infoproduto sobre investimentos",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

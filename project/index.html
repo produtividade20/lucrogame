@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvestMaster - Transforme seu Futuro Financeiro</title>
+    <link rel="stylesheet" href="src/styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Barra de Progresso Global -->
+    <div class="progress-container">
+        <div class="progress-bar" id="globalProgress"></div>
+    </div>
+
+    <!-- Container Principal -->
+    <div class="app-container">
+        <!-- Tela de Boas-vindas -->
+        <section id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <div class="logo-container">
+                    <i class="fas fa-chart-line logo-icon"></i>
+                    <h1 class="app-title">InvestMaster</h1>
+                </div>
+                
+                <div class="hero-section">
+                    <h2 class="hero-title">Descubra seu Potencial como Investidor</h2>
+                    <p class="hero-subtitle">
+                        Complete nossa jornada gamificada e descubra como transformar 
+                        <span class="highlight">R$ 100 em R$ 10.000</span> com estratégias comprovadas
+                    </p>
+                </div>
+
+                <div class="stats-preview">
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <span class="stat-number">+15.000</span>
+                        <span class="stat-label">Investidores</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-trophy"></i>
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Sucesso</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <span class="stat-number">4.9/5</span>
+                        <span class="stat-label">Avaliação</span>
+                    </div>
+                </div>
+
+                <button class="cta-button primary" onclick="gameManager.nextScreen()">
+                    <i class="fas fa-play"></i>
+                    Começar Jornada
+                </button>
+
+                <div class="trust-indicators">
+                    <p><i class="fas fa-shield-alt"></i> 100% Seguro e Gratuito</p>
+                    <p><i class="fas fa-clock"></i> Apenas 5 minutos</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tela de Perfil do Investidor -->
+        <section id="profile-screen" class="screen">
+            <div class="screen-header">
+                <h2><i class="fas fa-user-circle"></i> Seu Perfil de Investidor</h2>
+                <div class="level-indicator">
+                    <span class="level-badge">Nível 1</span>
+                    <div class="xp-bar">
+                        <div class="xp-fill" style="width: 20%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-form">
+                <div class="form-group">
+                    <label for="userName">Como posso te chamar?</label>
+                    <input type="text" id="userName" placeholder="Seu primeiro nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userEmail">Seu melhor e-mail:</label>
+                    <input type="email" id="userEmail" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Qual seu principal objetivo?</label>
+                    <div class="objective-cards">
+                        <div class="objective-card" data-objective="liberdade">
+                            <i class="fas fa-piggy-bank"></i>
+                            <h4>Liberdade Financeira</h4>
+                            <p>Viver de renda passiva</p>
+                        </div>
+                        <div class="objective-card" data-objective="extra">
+                            <i class="fas fa-coins"></i>
+                            <h4>Renda Extra</h4>
+                            <p>Complementar minha renda</p>
+                        </div>
+                        <div class="objective-card" data-objective="aposentadoria">
+                            <i class="fas fa-umbrella-beach"></i>
+                            <h4>Aposentadoria</h4>
+                            <p>Garantir meu futuro</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="cta-button primary" onclick="gameManager.nextScreen()" disabled id="profileContinue">
+                    <i class="fas fa-arrow-right"></i>
+                    Continuar Jornada
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Gamificado -->
+        <section id="quiz-screen" class="screen">
+            <div class="screen-header">
+                <h2><i class="fas fa-brain"></i> Teste seu Conhecimento</h2>
+                <div class="level-indicator">
+                    <span class="level-badge">Nível 2</span>
+                    <div class="xp-bar">
+                        <div class="xp-fill" style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="question-counter">
+                    <span id="currentQuestion">1</span> de <span id="totalQuestions">5</span>
+                </div>
+
+                <div class="question-card" id="questionCard">
+                    <h3 class="question-title" id="questionTitle">Carregando pergunta...</h3>
+                    <div class="answers-container" id="answersContainer">
+                        <!-- Respostas serão inseridas dinamicamente -->
+                    </div>
+                </div>
+
+                <div class="score-display">
+                    <div class="score-item">
+                        <i class="fas fa-star"></i>
+                        <span>Pontos: <span id="currentScore">0</span></span>
+                    </div>
+                    <div class="score-item">
+                        <i class="fas fa-fire"></i>
+                        <span>Sequência: <span id="streak">0</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resultado do Quiz -->
+        <section id="results-screen" class="screen">
+            <div class="screen-header">
+                <h2><i class="fas fa-chart-bar"></i> Seus Resultados</h2>
+                <div class="level-indicator">
+                    <span class="level-badge">Nível 3</span>
+                    <div class="xp-bar">
+                        <div class="xp-fill" style="width: 60%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-content">
+                <div class="score-summary">
+                    <div class="final-score">
+                        <i class="fas fa-trophy"></i>
+                        <span class="score-number" id="finalScore">0</span>
+                        <span class="score-label">pontos</span>
+                    </div>
+                    
+                    <div class="performance-badge" id="performanceBadge">
+                        <!-- Badge será inserido dinamicamente -->
+                    </div>
+                </div>
+
+                <div class="insights-container">
+                    <h3>Suas Oportunidades de Crescimento:</h3>
+                    <div class="insight-cards" id="insightCards">
+                        <!-- Insights serão inseridos dinamicamente -->
+                    </div>
+                </div>
+
+                <div class="next-step-preview">
+                    <h3>Com base no seu perfil, preparamos algo especial:</h3>
+                    <div class="preview-card">
+                        <i class="fas fa-gift"></i>
+                        <h4>Estratégia Personalizada</h4>
+                        <p>Um método exclusivo adaptado ao seu perfil de investidor</p>
+                    </div>
+                </div>
+
+                <button class="cta-button primary" onclick="gameManager.nextScreen()">
+                    <i class="fas fa-unlock"></i>
+                    Revelar Minha Estratégia
+                </button>
+            </div>
+        </section>
+
+        <!-- Apresentação do Produto -->
+        <section id="product-screen" class="screen">
+            <div class="screen-header">
+                <h2><i class="fas fa-star"></i> Sua Estratégia Personalizada</h2>
+                <div class="level-indicator">
+                    <span class="level-badge">Nível Master</span>
+                    <div class="xp-bar">
+                        <div class="xp-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-content">
+                <div class="product-hero">
+                    <div class="product-image">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    
+                    <h3 class="product-title">Método InvestMaster PRO</h3>
+                    <p class="product-subtitle">
+                        O sistema completo que já transformou a vida de mais de 15.000 investidores
+                    </p>
+                </div>
+
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <i class="fas fa-rocket"></i>
+                        <h4>Método Acelerado</h4>
+                        <p>Resultados em 30 dias ou menos</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>100% Seguro</h4>
+                        <p>Estratégias de baixo risco</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-headset"></i>
+                        <h4>Suporte Total</h4>
+                        <p>Mentoria exclusiva incluída</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h4>Acesso Vitalício</h4>
+                        <p>Plataforma mobile + desktop</p>
+                    </div>
+                </div>
+
+                <div class="social-proof">
+                    <h4>Depoimentos de Quem Já Transformou a Vida:</h4>
+                    <div class="testimonials">
+                        <div class="testimonial">
+                            <div class="testimonial-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="testimonial-content">
+                                <p>"Em 3 meses, minha carteira cresceu 847%. Inacreditável!"</p>
+                                <span class="testimonial-author">- Maria S., Professora</span>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <div class="testimonial-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="testimonial-content">
+                                <p>"Finalmente entendi como investir de verdade. Recomendo!"</p>
+                                <span class="testimonial-author">- João P., Engenheiro</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="offer-container">
+                    <div class="price-section">
+                        <div class="original-price">De R$ 497</div>
+                        <div class="current-price">Por apenas R$ 97</div>
+                        <div class="discount-badge">80% OFF</div>
+                    </div>
+
+                    <div class="urgency-timer">
+                        <i class="fas fa-clock"></i>
+                        <span>Oferta válida por tempo limitado!</span>
+                    </div>
+
+                    <button class="cta-button primary large" onclick="gameManager.nextScreen()">
+                        <i class="fas fa-credit-card"></i>
+                        Quero Minha Estratégia Agora
+                    </button>
+
+                    <div class="guarantees">
+                        <p><i class="fas fa-undo"></i> Garantia de 30 dias</p>
+                        <p><i class="fas fa-lock"></i> Pagamento 100% seguro</p>
+                        <p><i class="fas fa-download"></i> Acesso imediato</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulário Final -->
+        <section id="checkout-screen" class="screen">
+            <div class="screen-header">
+                <h2><i class="fas fa-credit-card"></i> Finalizar Pedido</h2>
+                <div class="completion-badge">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Jornada Completa!</span>
+                </div>
+            </div>
+
+            <div class="checkout-content">
+                <div class="order-summary">
+                    <h3>Resumo do Pedido</h3>
+                    <div class="order-item">
+                        <span class="item-name">Método InvestMaster PRO</span>
+                        <span class="item-price">R$ 97,00</span>
+                    </div>
+                    <div class="order-total">
+                        <span>Total: R$ 97,00</span>
+                    </div>
+                </div>
+
+                <div class="checkout-form">
+                    <h3>Dados para Acesso</h3>
+                    <div class="form-group">
+                        <label for="checkoutName">Nome Completo:</label>
+                        <input type="text" id="checkoutName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="checkoutEmail">E-mail:</label>
+                        <input type="email" id="checkoutEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="checkoutPhone">WhatsApp:</label>
+                        <input type="tel" id="checkoutPhone" placeholder="(11) 99999-9999" required>
+                    </div>
+
+                    <button class="cta-button primary large" onclick="gameManager.processOrder()">
+                        <i class="fas fa-lock"></i>
+                        Finalizar Compra Segura
+                    </button>
+
+                    <div class="security-badges">
+                        <div class="security-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>SSL Seguro</span>
+                        </div>
+                        <div class="security-item">
+                            <i class="fas fa-credit-card"></i>
+                            <span>PCI Compliant</span>
+                        </div>
+                        <div class="security-item">
+                            <i class="fas fa-user-shield"></i>
+                            <span>Dados Protegidos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tela de Sucesso -->
+        <section id="success-screen" class="screen">
+            <div class="success-content">
+                <div class="success-animation">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                
+                <h2>Parabéns! 🎉</h2>
+                <p class="success-message">
+                    Seu pedido foi processado com sucesso!<br>
+                    Verifique seu e-mail para acessar o conteúdo.
+                </p>
+
+                <div class="next-steps">
+                    <h3>Próximos Passos:</h3>
+                    <div class="step-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Verifique sua caixa de entrada</span>
+                    </div>
+                    <div class="step-item">
+                        <i class="fas fa-key"></i>
+                        <span>Use seus dados de acesso</span>
+                    </div>
+                    <div class="step-item">
+                        <i class="fas fa-rocket"></i>
+                        <span>Comece sua transformação!</span>
+                    </div>
+                </div>
+
+                <button class="cta-button primary" onclick="location.reload()">
+                    <i class="fas fa-redo"></i>
+                    Iniciar Nova Jornada
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="src/js/quiz-data.js"></script>
+    <script src="src/js/game-manager.js"></script>
+    <script src="src/js/form-handlers.js"></script>
+    <script src="src/js/main.js"></script>
+</body>
+</html>
